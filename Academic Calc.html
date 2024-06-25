@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Academic Calc</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  
+}
+
+#tittle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5em; 
+    text-decoration: underline;
+	text-align:center;
+}
+#subTittle {
+    font-size: 1.8em;
+    font-family: 'Brush Script MT', cursive;
+    font-style: italic;
+	text-align:center;
+}
+
+/* Column container */
+.row {
+  display: flex;
+  width: 100%; /* Set the width to 100% to fill the entire horizontal space */
+}
+
+/* Main column */
+.main {
+  flex: 1; /* Allow the main column to take the remaining width */
+  background-color: white;
+  padding: 20px;
+  
+}
+
+/* Side column */
+.side {
+  flex: 0 0 20%; /* Set a fixed width for the side column, adjust as needed */
+  background-color: white; /* Change background color to white */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+}
+
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+  .navbar a {
+    float: none;
+    width:100%;
+  }
+}
+
+.ads-container {
+    display: flex;
+	width: 75%;
+    justify-content: flex-end; /* Align to the right */
+	
+}
+
+.ads {
+    width: 200px; /* Set a specific width */
+    padding: 20px 
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.ads:hover {
+    transform: scale(1.1);
+}
+
+.ads-image {
+    width: 100%;
+    height: auto;
+}
+
+.ads-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: black;
+}
+
+.tab button {
+  background-color: inherit;
+  color: white;
+  text-align: center;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 30px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+.tab button:hover {
+  background-color: #ddd;
+}
+
+.tab button.active {
+  display: block;
+  background-color: #ccc;
+}
+
+.tabcontent {
+  display: none;
+  padding: 20px; /* Added padding for better spacing */
+}
+
+.tabcontent h2,
+.tabcontent table{
+  text-align: center; /* Center the text horizontally */
+  margin: auto;
+  max-width: 800px; /* Adjust the maximum width as needed */
+}
+.tabcontent ul,
+.tabcontent ol{
+  text-align: left; /* Center the text horizontally */
+
+}
+
+#calculateButton {
+  display: block;
+  margin: auto;
+}
+
+.tabcontent {
+    padding: 20px 0; /* Add vertical padding */
+    display: none;
+}
+
+#feedbackSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#feedbackSection form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px; /* Adjust the max-width as needed */
+    margin: 0 auto;
+}
+
+#feedbackSection .form-outer {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#feedbackSection label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#feedbackSection input[name="Name"],
+#feedbackSection input[name="Email"],
+#feedbackSection textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#feedbackSection textarea {
+    resize: vertical; /* Allow vertical resizing */
+}
+
+#feedbackSection button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+#feedbackSection #res {
+    margin-top: 20px;
+    max-width: 400px; /* Adjust the max-width as needed */
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.tablinks:hover {
+    background-color: #ddd;
+}
+
+</style>
+</head>
+<body>
+
+<div id="header" role="banner">
+	<div id="tittle">Academic Calc</div>
+    <div id="subTittle">Unlock Academic Brilliance—Fast!</div>
+</div>
+
+<div class="row">
+<div class="main">
+  <div class="tab">
+    <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'home')">HOME</button>
+    <button class="tablinks" onclick="openTab(event, 'calculatorDetails')">CalculatorDetails</button>
+    <button class="tablinks" onclick="openTab(event, 'calculator')">Calculator</button>
+    <button class="tablinks" onclick="openTab(event, 'feedbackSection')">Feedback</button>
+    <button class="tablinks" onclick="openTab(event, 'aboutSection')">About</button>
+ </div>
+
+  <div id="calculatorDetails" class="tabcontent">
+
+    <div id="cbcs-info">
+      <h2 class="section-heading"><span class="underline-text">Choice Based Credit System (CBCS)</span></h2>
+
+      <h4 class="subsection-heading">Award of Grades:</h4>
+      <ul class="award-grades" style = "text-align: left;">
+        <li>Credit means the unit by which the course work is measured.</li>
+        <li>Grade Letter is an index to indicate the performance of a student in a particular course (Paper).</li>
+        <li>Grade Point is weightage allotted to each grade letter depending on the marks awarded in a paper.</li>
+        <li>Credit Points refer to the product of No. of credits multiplied by the Grade Point for a given paper.</li>
+      </ul>
+
+      <h3 class="subsection-heading" style="text-align:center">Details of Award of Grades under CBCS:</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Range of Marks</th>
+            <th>Grade Letter</th>
+            <th>Grade Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>85% and above</td>
+            <td>O</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>70% to 84%</td>
+            <td>A</td>
+            <td>09</td>
+          </tr>
+          <tr>
+            <td>60% to 69%</td>
+            <td>B</td>
+            <td>08</td>
+          </tr>
+          <tr>
+            <td>55% to 59%</td>
+            <td>C</td>
+            <td>07</td>
+          </tr>
+          <tr>
+            <td>50% to 54%</td>
+            <td>D</td>
+            <td>06</td>
+          </tr>
+          <tr>
+            <td>40% to 49%</td>
+            <td>E</td>
+            <td>05</td>
+          </tr>
+          <tr>
+            <td>Less than 40%</td>
+            <td>F</td>
+            <td>00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-note"><strong>Note:</strong> GPA is computed only if the candidate passes in all the theory/practical papers with a minimum of ‘E’ Grade. If a candidate secures ‘F’ Grade in a theory/practical paper, he/she is considered to have failed in that paper. *Not considered for computing GPA.</p>
+
+    </div>
+  </div>
+
+  <div id="home" class="tabcontent">
+    <div id="intro">
+      <h1>Welcome to the GPA Calculator</h1>
+      <p>Calculate your GPA with ease and get insights into your academic performance. Enter the details of your subjects, including credits and grades, and let our GPA calculator do the rest.</p>
+    </div>
+   <div id="how-it-works">
+	<h2 class="section-heading">How the GPA Calculator Works</h2>
+    <p class="section-description">The GPA calculator takes into account the credits and grades/point values of each subject to calculate your overall GPA. Follow these steps:</p>
+    <ol class="calculator-steps" style = "text-align: left;">
+      <li>Enter the total number of subjects you are studying.</li>
+      <li>For each subject, input the subject name, credits, and either the grade or point value.</li>
+      <li>Click the "Calculate GPA" button to see your GPA and receive a personalized message based on your performance.</li>
+    </ol>
+    <p class="section-note"><strong>Note:</strong> The calculator considers standard grade values (O, A, B, C, etc.) and numeric point values (00-10).</p>
+</div>   
+  </div>
+
+<div id="calculator" class="tabcontent">
+    <h2><span style="color: ; text-align: center;">GPA Calculator</span></h2>
+    <div id="totalSemestersContainer">
+    <label for="totalSemesters">Total Semesters:</label>
+        <input type="number" id="totalSemesters" placeholder="Total Semesters" value="1" required>
+    </div>
+
+    <div id="semesterCalculators"></div>
+
+    <div id="result"></div>
+    <button id="calculateButton">Calculate GPA</button>
+</div>
+
+
+<div id="feedbackSection" class="tabcontent">
+        <h2>Feedback</h2>
+        <p>We would love to hear your feedback! Please let us know how we can improve the GPA Calculator.</p>
+        <form method="post" id="form">
+            <div class="form-outer">
+                <label>Name</label>
+                <input type="text" name="Name">
+            </div>
+            <div class="form-outer">
+                <label>Email</label>
+                <input type="text" name="Email">
+            </div>
+			<div class="form-outer">
+                <label>Feedback</label>
+				<textarea name="Feedback" rows="4"></textarea>
+            </div>	
+            <div class="form-outer">
+                <button name="btn">Submit</button>
+            </div>
+		</form>
+		 <div id="res"></div>
+
+</div>
+<div id="aboutSection" class="tabcontent">
+            <h2>About Academic Calc</h2>
+            <p>Welcome to Academic Calc, your tool for calculating GPA effortlessly. </p>
+			<p>This tool is developed by Shubham Tiwari, a student at Loyola Academy, to simplify the GPA calculation process for our college and Osmania University CBCS system.</p>
+            <p>Feel free to explore and use this calculator for your academic needs. Your feedback is valuable in improving this tool further!</p>
+        </div>
+</div>
+
+  <div class="side">
+    <h2>Advertisements</h2>
+    <div class="ads-container">
+      <a href="your_advertisement_link_here" class="ads-link" target="_blank">
+        <div class="ads" style="height:70px;">
+          <img src="C:/Users/91918/Pictures/GoTatva_Logo-Name-Horizontal-1000dpi.png" alt="GoTatva Advertisement" class="ads-image">
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    openTab(event, 'home');
+
+    window.shareOnWhatsApp = function () {
+        const resultDiv = document.getElementById('result');
+        const GPA = parseFloat(resultDiv.innerText.match(/Your GPA is: (\d+\.\d+)/)[1]);
+        if (isNaN(GPA)) {
+            alert("Invalid GPA. Please calculate GPA first.");
+            return;
+        }
+        const message = `My GPA is: ${GPA.toFixed(2)} on QuickGPACalc. Check it out!`;
+        window.location.href = `whatsapp://send?text=${encodeURIComponent(message)}`;
+    };
+        
+const totalSemestersInput = document.getElementById('totalSemesters');
+    const semesterCalculatorsContainer = document.getElementById('semesterCalculators');
+    const resultDiv = document.getElementById('result');
+    const calculateButton = document.getElementById('calculateButton');
+
+    generateSemesterCalculator(1);
+
+    totalSemestersInput.addEventListener('input', function () {
+        semesterCalculatorsContainer.innerHTML = '';
+
+        const totalSemesters = parseInt(totalSemestersInput.value) || 1;
+        if (totalSemesters !== 1) {
+            semesterCalculatorsContainer.innerHTML = '';
+        }
+
+        for (let semester = 1; semester <= totalSemesters; semester++) {
+            generateSemesterCalculator(semester);
+        }
+    });
+
+    calculateButton.addEventListener('click', function () {
+        resultDiv.innerHTML = '';
+
+        let totalGPA = 0;
+        let totalCreditsAllSemesters = 0;
+        let totalCreditPointsAllSemesters = 0;
+
+        for (let semester = 1; semester <= totalSemestersInput.value; semester++) {
+            const totalSubjectsInput = document.getElementById(`totalSubjects${semester}`);
+            const subjectsTableBody = document.getElementById(`subjectsTableBody${semester}`);
+
+            let totalCreditPoints = 0;
+            let totalCredits = 0;
+            let hasFailed = false;
+            let isValid = true;
+
+            const totalSubjects = parseInt(totalSubjectsInput.value) || 0;
+            if (isNaN(totalSubjects) || totalSubjects <= 0) {
+                isValid = false;
+                resultDiv.innerHTML = `Hey there! 👋 It looks like you missed entering the total number of subjects for Semester ${semester}. Please provide a valid number to proceed with your GPA calculation.  <br> <br>`;
+                resultDiv.className = 'warning';
+                return;
+            }
+
+            const rows = subjectsTableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const subjectInput = row.querySelector('td:nth-child(1) input');
+                const creditsInput = row.querySelector('td:nth-child(2) input');
+                const gradePointInput = row.querySelector('td:nth-child(3) .grade-input');
+
+                const credits = parseInt(creditsInput.value);
+                const gradeOrPointValue = gradePointInput.value.toUpperCase();
+
+                if (isNaN(credits) || credits < 0 || gradeOrPointValue === '') {
+                    isValid = false;
+                    resultDiv.innerHTML = 'Oops! 🙊 It looks like you haven\'t entered any valid data. Please provide valid credits, grade, or point value for each subject to calculate your GPA. Your success story begins with accurate input! <br> <br>';
+                    resultDiv.className = 'warning';
+                    return;
+                }
+
+                let pointValue;
+                
+                if (['O', 'A', 'B', 'C', 'D', 'E', 'F'].includes(gradeOrPointValue)) {
+                    switch (gradeOrPointValue) {
+                        case 'O':
+                            pointValue = 10;
+                            break;
+                        case 'A':
+                            pointValue = 9;
+                            break;
+                        case 'B':
+                            pointValue = 8;
+                            break;
+                        case 'C':
+                            pointValue = 7;
+                            break;
+                        case 'D':
+                            pointValue = 6;
+                            break;
+                        case 'E':
+                            pointValue = 5;
+                            break;
+                        case 'F':
+                            pointValue = 0;
+                            break;
+                    }
+                } else {
+                    pointValue = parseFloat(gradeOrPointValue);
+
+                    if (isNaN(pointValue) || pointValue < 0 || pointValue > 10) {
+                        isValid = false;
+                        resultDiv.innerHTML = 'Uh-oh! 🚨 The grade or point value you entered is invalid. Double-check your input and ensure it aligns with the grading system. Let\'s fix it and try again for an accurate GPA calculation! <br> <br>';
+                        resultDiv.className = 'warning';
+                        return;
+                    }
+                }
+
+                if (isValid) {
+                    if (pointValue < 5) {
+                        hasFailed = true;
+                        return;
+                    }
+
+                    totalCreditPoints += credits * pointValue;
+                    totalCredits += credits;
+                }
+            });
+
+
+            if (isValid) {
+                totalCreditPointsAllSemesters += totalCreditPoints;
+                totalCreditsAllSemesters += totalCredits;
+
+                if (hasFailed) {
+                    resultDiv.innerHTML += `It happens to the best of us! 🤷‍♂️ Unfortunately, this time it didn't work out for Semester ${semester}. Don't worry; use this experience as motivation to bounce back stronger next time! <br> <br>`;
+                    resultDiv.className = 'failed';
+                } else {
+                    const GPA = totalCredits === 0 ? 0 : totalCreditPoints / totalCredits;
+                    totalGPA += GPA;
+
+
+                    if (GPA > 9) {
+                        message = `Incredible work! 🚀 Your GPA reflects exceptional dedication and excellence. Keep reaching for the stars, and continue your journey of academic success! <br><br>`;
+                    } else if (GPA > 8) {
+                        message = `Fantastic job! 👏 Your GPA shows a commitment to excellence. Keep up the great work, and aim even higher for future successes! <br> <br>`;
+                    } else if (GPA > 7) {
+                        message = `Well done! 🎉 Your GPA indicates solid effort and achievement. Continue your hard work, and strive for continuous improvement! <br> <br>`;
+                    } else {
+                        message = `Congratulations! 🌟 You've successfully passed. Keep up the good work, and remember that every effort counts towards your academic journey! <br> <br>`;
+                    }
+                    resultDiv.innerHTML += `<span style="color: #00cc66;">Semester ${semester} GPA: ${GPA.toFixed(2)}</span>  <br> <br>`;
+                    resultDiv.innerHTML += message;
+                    resultDiv.className = 'passed';
+                }
+            }
+        }
+
+        if (totalSemestersInput.value > 1) {
+            const finalGPA = totalGPA / totalSemestersInput.value;
+            resultDiv.innerHTML += `<span style="color: #3366ff;">Final GPA for all semesters: ${finalGPA.toFixed(2)}</span>  <br> <br>`;
+        }
+    });
+    function generateSemesterCalculator(semester) {
+        const semesterCalculator = document.createElement('div');
+        semesterCalculator.innerHTML = `
+            <h3>Semester ${semester}</h3>
+            <div id="totalSubjectsContainer${semester}">
+                <label for="totalSubjects${semester}" id="totalSubjectsLabel${semester}">Enter the total number of subjects:</label>
+                <input type="number" id="totalSubjects${semester}" placeholder="Total Subjects" required>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>SUBJECTS</th>
+                        <th>CREDITS</th>
+                        <th>GRADE/POINT VALUE</th>
+                    </tr>
+                </thead>
+                <tbody id="subjectsTableBody${semester}"></tbody>
+            </table>
+        `;
+        semesterCalculatorsContainer.appendChild(semesterCalculator);
+
+        const totalSubjectsInput = document.getElementById(`totalSubjects${semester}`);
+        const subjectsTableBody = document.getElementById(`subjectsTableBody${semester}`);
+
+        totalSubjectsInput.addEventListener('input', function () {
+            subjectsTableBody.innerHTML = '';
+
+            const totalSubjects = parseInt(totalSubjectsInput.value) || 0;
+
+            for (let i = 0; i < totalSubjects; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" placeholder="Subject ${i + 1}" required></td>
+                    <td><input type="number" placeholder="Credits" required></td>
+                    <td>
+                        <input type="text" placeholder="Grade or Point Value" class="grade-input" required>
+                    </td>
+                `;
+                subjectsTableBody.appendChild(row);
+            }
+        });
+    }
+});
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    var currentTab = document.getElementById(tabName);
+    if (currentTab) {
+        currentTab.style.display = "block";
+        evt.currentTarget.className += " active";
+    } else {
+        console.error("Tab with ID '" + tabName + "' not found.");
+    }
+}
+
+function submitFeedback() {
+    let feedbackUrl = 'https://script.google.com/macros/s/AKfycbwP1ClxEeyb6kGWM1nDRuzUUIbpTaQgO_WTlme-x7ZJbbIScdfxLYNLq57Haq_boqXj/exec';
+    let feedbackForm = document.querySelector('#form');
+
+    feedbackForm.addEventListener("submit", (e) => {
+        e.target.btn.innerHTML = "Submitting....";
+
+        // Check if the name and email fields are filled
+        let nameInput = feedbackForm.querySelector('input[name="Name"]');
+        let emailInput = feedbackForm.querySelector('input[name="Email"]');
+        let feedbackInput = feedbackForm.querySelector('textarea[name="Feedback"]');
+        let isValid = true;
+
+        // Validate name
+        if (nameInput.value.trim() === '') {
+            alertUser('Please enter your name.', nameInput);
+            isValid = false;
+        }
+
+        // Validate email
+        if (emailInput.value.trim() === '') {
+            alertUser('Please enter your email address.', emailInput);
+            isValid = false;
+        } else if (!isValidEmail(emailInput.value.trim())) {
+            alertUser('Please enter a valid email address.', emailInput);
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.target.btn.innerHTML = "Submit";
+            e.preventDefault();
+            return;
+        }
+
+        let formData = new FormData(feedbackForm);
+
+        fetch(feedbackUrl, {
+            method: "POST",
+            body: formData
+        })
+        .then((res) => res.text())
+        .then((finalRes) => {
+            e.target.btn.innerHTML = "Submit";
+            document.getElementById("res").innerHTML = finalRes;
+            feedbackForm.reset();
+            setTimeout(() => document.getElementById("res").innerHTML = '', 5000);
+        });
+
+        e.preventDefault();
+    });
+
+    function alertUser(message, inputElement) {
+        var errorMessage = document.createElement("div");
+        errorMessage.className = "error-message";
+        errorMessage.innerHTML = message;
+
+        var existingErrorMessage = inputElement.nextElementSibling;
+        if (existingErrorMessage) {
+            existingErrorMessage.parentNode.removeChild(existingErrorMessage);
+        }
+        inputElement.parentNode.insertBefore(errorMessage, inputElement.nextSibling);
+    }
+}
+
+function isValidEmail(email) {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+submitFeedback();
+
+</script>
+</html>
